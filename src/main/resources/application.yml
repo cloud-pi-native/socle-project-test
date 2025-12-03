@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/demo_dso
+    username: demo_dso
+    password: demo_dso
+  liquibase:
+    change-log: classpath:db/master.xml

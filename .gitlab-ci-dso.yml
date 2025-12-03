@@ -1,0 +1,84 @@
+include:
+  - project: $CATALOG_PATH
+    file:
+      - vault-ci.yml
+      - kaniko-ci.yml
+    ref: main
+  - local: "/includes/java-mvn.yml"
+
+# default:
+#  tags:
+#    - ADD_CUSTOM_TAG_HERE
+
+cache:
+  paths:
+    - .m2/repository/
+    - node_modules
+
+variables:
+  TAG: "${CI_COMMIT_REF_SLUG}"
+  DOCKERFILE: Dockerfile
+  REGISTRY_URL: "${IMAGE_REPOSITORY}"
+
+stages:
+  - read-secret
+  - package-app
+  - test-app
+  - docker-build
+
+read_secret:
+  only:
+    - web
+  stage: read-secret
+  extends:
+    - .vault:read_secret
+
+test-nexus:
+  only:
+    - web
+  variables:
+    BUILD_IMAGE_NAME: maven:3.9.6-eclipse-temurin-21
+    WORKING_DIR: "."
+    ARTEFACT_DIR: "target/"
+    MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+    MAVEN_CLI_OPTS: "-Ddependency-check.skip=true -DskipITs -DskipTests -Dmaven.test.skip=true --no-transfer-progress"
+    MVN_CONFIG_FILE: $MVN_CONFIG
+  stage: test-app
+  extends:
+    - .java:deploy
+  artifacts:
+    paths:
+      - "${ARTEFACT_DIR}"
+    expire_in: 1 hrs
+
+test-sonar:
+  only:
+    - web
+  variables:
+    BUILD_IMAGE_NAME: maven:3.8-openjdk-17
+    WORKING_DIR: .
+  stage: test-app
+  extends:
+    - .java:sonar
+  allow_failure: true
+
+docker-build:
+  only:
+    - web
+  variables:
+    WORKING_DIR: "."
+    IMAGE_NAME: java-demo
+  stage: docker-build
+  extends:
+    - .kaniko:simple-build-push
+
+docker-build-2:
+  only:
+    - web
+  variables:
+    WORKING_DIR: "."
+    IMAGE_NAME: javanaise-demo
+    DOCKERFILE: DockerfileJavanaise
+  stage: docker-build
+  extends:
+    - .kaniko:simple-build-push
