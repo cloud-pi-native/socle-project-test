@@ -22,6 +22,7 @@ variables:
 
 stages:
   - read-secret
+  - package-app
   - test-app
   - docker-build
 
@@ -32,8 +33,25 @@ read_secret:
   extends:
     - .vault:read_secret
 
+test-nexus:
+  only:
+    - web
+  variables:
+    BUILD_IMAGE_NAME: maven:3.9.6-eclipse-temurin-21
+    WORKING_DIR: "."
+    ARTEFACT_DIR: "target/"
+    MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+    MAVEN_CLI_OPTS: "-Ddependency-check.skip=true -DskipITs -DskipTests -Dmaven.test.skip=true --no-transfer-progress"
+    MVN_CONFIG_FILE: $MVN_CONFIG
+  stage: test-app
+  extends:
+    - .java:deploy
+  artifacts:
+    paths:
+      - "${ARTEFACT_DIR}"
+    expire_in: 1 hrs
 
-test-app:
+test-sonar:
   only:
     - web
   variables:
