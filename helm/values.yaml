@@ -1,0 +1,32 @@
+# Default values for demo-java-helm.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: harbor.sdid-hp.cpin.numerique-interieur.com/socleprojecttest/java-demo
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "main"
+
+imagePullSecrets: 
+  - name: "registry-pull-secret"
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  type: ClusterIP
+  port: 8080
+
+ingress:
+  enabled: true
+  host: socle-project-test.sdid-hp.cpin.numerique-interieur.com
+
+resources: 
+  limits:
+    memory: "512Mi"
+    cpu: "500m"  
+  requests:
+    memory: "256Mi"
+    cpu: "100m"  
