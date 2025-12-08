@@ -53,7 +53,7 @@ test-sonar:
   only:
     - web
   variables:
-    BUILD_IMAGE_NAME: maven:3.8-openjdk-17
+    BUILD_IMAGE_NAME: maven:3.9.6-eclipse-temurin-21
     WORKING_DIR: .
   stage: test-app
   extends:
