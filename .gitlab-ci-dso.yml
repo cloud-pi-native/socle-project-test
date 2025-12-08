@@ -22,11 +22,9 @@ variables:
 
 stages:
   - read-secret
-  - package-app
   - test-app
-  - docker-build
 
-read_secret:
+test-vault:
   only:
     - web
   stage: read-secret
@@ -62,23 +60,12 @@ test-sonar:
     - .java:sonar
   allow_failure: true
 
-docker-build:
+test-harbor:
   only:
     - web
   variables:
     WORKING_DIR: "."
     IMAGE_NAME: java-demo
-  stage: docker-build
-  extends:
-    - .kaniko:simple-build-push
-
-docker-build-2:
-  only:
-    - web
-  variables:
-    WORKING_DIR: "."
-    IMAGE_NAME: javanaise-demo
-    DOCKERFILE: DockerfileJavanaise
-  stage: docker-build
+  stage: test-app
   extends:
     - .kaniko:simple-build-push
