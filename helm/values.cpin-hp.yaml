@@ -1,0 +1,6 @@
+image:
+  repository: harbor.dso.cpin-hp.numerique-interieur.fr/demo/java-demo
+
+ingress:
+  host: demo.app.cpin-hp.cpin.numerique-interieur.com
+
