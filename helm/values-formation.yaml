@@ -1,0 +1,5 @@
+image:
+  repository: harbor.formation.cpin.numerique-interieur.com/socleprojecttest/java-demo
+
+ingress:
+  host: socle-project-test.formation-app.cpin.numerique-interieur.com
