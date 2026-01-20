@@ -56,6 +56,8 @@ test-sonar:
     BUILD_IMAGE_NAME: maven:3.9.6-eclipse-temurin-21
     WORKING_DIR: .
   stage: test-app
+  before_script:
+    - cp "$MVN_CONFIG_FILE" settings.xml
   extends:
     - .java:sonar
   allow_failure: true
@@ -67,5 +69,7 @@ test-harbor:
     WORKING_DIR: "."
     IMAGE_NAME: java-demo
   stage: test-app
+  before_script:
+    - cp "$MVN_CONFIG_FILE" settings.xml
   extends:
     - .kaniko:simple-build-push
