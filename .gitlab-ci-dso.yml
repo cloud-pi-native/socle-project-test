@@ -56,8 +56,6 @@ test-sonar:
     BUILD_IMAGE_NAME: maven:3.9.6-eclipse-temurin-21
     WORKING_DIR: .
   stage: test-app
-  before_script:
-    - cp "$MVN_CONFIG_FILE" settings.xml
   extends:
     - .java:sonar
   allow_failure: true
@@ -68,8 +66,10 @@ test-harbor:
   variables:
     WORKING_DIR: "."
     IMAGE_NAME: java-demo
+    EXTRA_BUILD_ARGS: "--build-arg PROJECT_PATH=$PROJECT_PATH --build-arg NEXUS_USERNAME=$NEXUS_USERNAME --build-arg NEXUS_PASSWORD=$NEXUS_PASSWORD"
   stage: test-app
   before_script:
     - cp "$MVN_CONFIG_FILE" settings.xml
+    - if [ ! -z $CA_BUNDLE ]; then cp $CA_BUNDLE ./internal-ca.crt; else touch ./internal-ca.crt; fi
   extends:
     - .kaniko:simple-build-push
