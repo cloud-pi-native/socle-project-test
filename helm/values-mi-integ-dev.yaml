@@ -1,0 +1,5 @@
+image:
+  repository: registry.integ.dso.minint.fr/socleprojecttest/java-demo
+
+ingress:
+  enabled: false
