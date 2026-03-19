@@ -19,6 +19,7 @@ variables:
   TAG: "${CI_COMMIT_REF_SLUG}"
   DOCKERFILE: Dockerfile
   REGISTRY_URL: "${IMAGE_REPOSITORY}"
+  REMOTE_DOCKER_HUB_REGISTRY: $REGISTRY_HOST/dockerhub
 
 stages:
   - read-secret
@@ -35,7 +36,7 @@ test-nexus:
   rules:
     - if: $CI_PIPELINE_SOURCE == "push"
   variables:
-    BUILD_IMAGE_NAME: maven:3.9.6-eclipse-temurin-21
+    BUILD_IMAGE_NAME: $REMOTE_DOCKER_HUB_REGISTRY/maven:3.9.6-eclipse-temurin-21
     WORKING_DIR: "."
     ARTEFACT_DIR: "target/"
     MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
@@ -53,7 +54,7 @@ test-sonar:
   rules:
     - if: $CI_PIPELINE_SOURCE == "push"
   variables:
-    BUILD_IMAGE_NAME: maven:3.9.6-eclipse-temurin-21
+    BUILD_IMAGE_NAME: $REMOTE_DOCKER_HUB_REGISTRY/maven:3.9.6-eclipse-temurin-21
     WORKING_DIR: .
   stage: test-app
   extends:
