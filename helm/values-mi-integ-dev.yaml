@@ -2,4 +2,7 @@ image:
   repository: registry.integ.dso.minint.fr/socleprojecttest/java-demo
 
 ingress:
-  enabled: false
+  enabled: true
+  host: socleprojecttest.d614.dev.forge.minint.fr
+  annotations:
+    route.openshift.io/termination: edge
