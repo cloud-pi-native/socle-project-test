@@ -1,0 +1,21 @@
+{{- if and .Values.ingress.enabled (.Capabilities.APIVersions.Has "route.openshift.io/v1") -}}
+{{- $fullName := include "demo-java-helm.fullname" . -}}
+{{- $svcPort := .Values.service.port -}}
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ $fullName }}
+  labels:
+    {{- include "demo-java-helm.labels" . | nindent 4 }}
+  {{- with .Values.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  host: {{ .Values.ingress.host }}
+  to:
+    kind: Service
+    name: {{ $fullName }}
+  port:
+    targetPort: {{ $svcPort }}
+{{- end }}
