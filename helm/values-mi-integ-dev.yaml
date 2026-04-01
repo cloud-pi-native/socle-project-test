@@ -3,6 +3,7 @@ image:
 
 ingress:
   enabled: true
+  ingressClassName: openshift-default
   host: socleprojecttest.d614.dev.forge.minint.fr
   annotations:
     route.openshift.io/termination: edge

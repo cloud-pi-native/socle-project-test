@@ -10,7 +10,7 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: "main"
 
-imagePullSecrets: 
+imagePullSecrets:
   - name: "registry-pull-secret"
 nameOverride: ""
 fullnameOverride: ""
@@ -21,12 +21,13 @@ service:
 
 ingress:
   enabled: true
+  ingressClassName: nginx
   host: socle-project-test.sdid-hp.cpin.numerique-interieur.com
 
-resources: 
+resources:
   limits:
     memory: "512Mi"
-    cpu: "500m"  
+    cpu: "500m"
   requests:
     memory: "256Mi"
-    cpu: "100m"  
+    cpu: "100m"
