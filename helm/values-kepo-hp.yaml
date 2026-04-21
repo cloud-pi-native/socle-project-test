@@ -1,0 +1,5 @@
+image:
+  repository: harbor.dso.cpin-hp.numerique-interieur.fr/kepodevtestproject/java-demo
+
+ingress:
+  host: kepo-project-test.app.cpin-hp.numerique-interieur.fr
