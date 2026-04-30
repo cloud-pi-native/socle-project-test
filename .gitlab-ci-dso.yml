@@ -5,6 +5,7 @@ include:
       - kaniko-ci.yml
     ref: main
   - local: "/includes/java-mvn.yml"
+  - local: "/includes/helm-oci.yml"
 
 # default:
 #  tags:
@@ -40,7 +41,8 @@ test-nexus:
     WORKING_DIR: "."
     ARTEFACT_DIR: "target/"
     MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
-    MAVEN_CLI_OPTS: "-Ddependency-check.skip=true -DskipITs -DskipTests -Dmaven.test.skip=true --no-transfer-progress"
+    MAVEN_CLI_OPTS: "-Ddependency-check.skip=true -DskipITs -DskipTests
+      -Dmaven.test.skip=true --no-transfer-progress"
     MVN_CONFIG_FILE: $MVN_CONFIG
   stage: test-app
   extends:
@@ -67,10 +69,21 @@ test-harbor:
   variables:
     WORKING_DIR: "."
     IMAGE_NAME: java-demo
-    EXTRA_BUILD_ARGS: "--build-arg PROJECT_PATH=$PROJECT_PATH --build-arg NEXUS_USERNAME=$NEXUS_USERNAME --build-arg NEXUS_PASSWORD=$NEXUS_PASSWORD"
+    EXTRA_BUILD_ARGS: "--build-arg PROJECT_PATH=$PROJECT_PATH --build-arg
+      NEXUS_USERNAME=$NEXUS_USERNAME --build-arg NEXUS_PASSWORD=$NEXUS_PASSWORD"
   stage: test-app
   before_script:
     - cp "$MVN_CONFIG_FILE" settings.xml
-    - if [ ! -z $CA_BUNDLE ]; then cp $CA_BUNDLE ./internal-ca.crt; else touch ./internal-ca.crt; fi
+    - if [ ! -z $CA_BUNDLE ]; then cp $CA_BUNDLE ./internal-ca.crt; else touch
+      ./internal-ca.crt; fi
   extends:
     - .kaniko:simple-build-push
+
+test-oci:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push"
+  variables:
+    CHART_PATH: helm
+  stage: test-app
+  extends:
+    - .helm:build-push

@@ -1,0 +1,36 @@
+.helm:build-push:
+  image: alpine/helm:latest
+  variables:
+    CHART_PATH: ./chart
+  script:
+    # Setup Docker auth for Helm (same credentials as kaniko)
+    - mkdir -p /root/.docker
+    - echo "$DOCKER_AUTH" > /root/.docker/config.json
+    # Package and push each changed chart
+    - |
+
+      # Extract version from Chart.yaml
+      CHART_VERSION=$(grep '^version:' ${CHART_PATH}/Chart.yaml | awk '{print $2}')
+      CHART_NAME=$(grep '^name:' ${CHART_PATH}/Chart.yaml | awk '{print $2}')
+
+      # Validate extracted values
+      if [ -z "$CHART_VERSION" ] || [ -z "$CHART_NAME" ]; then
+        echo "Error: Could not extract chart name or version from ${CHART_PATH}/Chart.yaml"
+        exit 1
+      fi
+
+      echo "Packaging ${CHART_NAME} version ${CHART_VERSION}"
+
+      # Update dependencies if Chart.lock exists or dependencies are defined
+      if [ -f "${CHART_PATH}/Chart.lock" ] || grep -q "^dependencies:" "${CHART_PATH}/Chart.yaml"; then
+        echo "Updating chart dependencies..."
+        helm dependency update ${CHART_PATH}
+      fi
+
+      # Package the chart
+      helm package ${CHART_PATH}
+
+      # Push to Harbor as OCI artifact
+      helm push ${CHART_NAME}-${CHART_VERSION}.tgz oci://${IMAGE_REPOSITORY}
+
+      echo "Successfully pushed ${CHART_NAME}:${CHART_VERSION} to ${IMAGE_REPOSITORY}"
