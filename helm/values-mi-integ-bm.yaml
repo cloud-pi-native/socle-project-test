@@ -1,0 +1,7 @@
+image:
+  repository: registry.integ.dso.minint.fr/testbaremetal/java-demo
+
+ingress:
+  enabled: true
+  ingressClassName: openshift-ingress-rie
+  host: testbaremetal.apps.ocpbm01s1.cores.r1.pi2.minint.fr
