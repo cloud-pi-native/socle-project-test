@@ -23,6 +23,8 @@ ingress:
   enabled: true
   ingressClassName: nginx
   host: socle-project-test.sdid-hp.cpin.numerique-interieur.com
+  tls:
+    enabled: false
 
 resources:
   limits:

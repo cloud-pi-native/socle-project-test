@@ -5,3 +5,8 @@ ingress:
   enabled: true
   ingressClassName: openshift-ingress-rie
   host: testbaremetal.apps.ocpbm01s1.cores.r1.pi2.minint.fr
+  tlsSecretName: secret-minint
+  tls:
+    enabled: true
+  annotations:
+    route.openshift.io/termination: edge
