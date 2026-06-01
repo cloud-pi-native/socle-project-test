@@ -4,4 +4,4 @@ image:
 ingress:
   enabled: true
   ingressClassName: openshift-default
-  host: socleprojecttest-dr.d641.dev.forge.minint.fr
+  host: socleprojecttest.d641.dev.forge.minint.fr
