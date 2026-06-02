@@ -1,0 +1,8 @@
+image:
+  repository: harbor.dso.cpin-hp.numerique-interieur.fr/demodeployment/java-demo
+
+ingress:
+  host: demo-front.app.cpin-hp.numerique-interieur.fr
+
+nameOverride: "app-front"
+fullnameOverride: "app-front"
