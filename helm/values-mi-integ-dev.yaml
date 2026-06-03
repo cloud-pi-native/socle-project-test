@@ -5,8 +5,7 @@ ingress:
   enabled: true
   ingressClassName: openshift-default
   host: socleprojecttest.d614.dev.forge.minint.fr
-  tlsSecretName: test-bm-tls-secret
+  tlsSecretName: secret-minint
   tls:
     enabled: true
-  annotations:
-    route.openshift.io/termination: edge
+
