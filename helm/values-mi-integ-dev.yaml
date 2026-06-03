@@ -1,7 +1,12 @@
 image:
-  repository: registry.integ.dso.minint.fr/socleprojecttest/java-demo
+  repository: registry.integ.dso.minint.fr/testbaremetal/java-demo
 
 ingress:
   enabled: true
   ingressClassName: openshift-default
   host: socleprojecttest.d614.dev.forge.minint.fr
+  tlsSecretName: test-bm-tls-secret
+  tls:
+    enabled: true
+  annotations:
+    route.openshift.io/termination: edge
