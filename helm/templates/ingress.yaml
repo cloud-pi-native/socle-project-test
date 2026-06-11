@@ -30,4 +30,24 @@ spec:
                 name: {{ $fullName }}
                 port:
                   number: {{ $svcPort }}
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+name: {{ include "demo-java-helm.fullname" . }}
+labels:
+  {{- include "demo-java-helm.labels" . | nindent 4 }}
+spec:
+  host: {{ .Values.ingress.host }}
+  path: /
+  to:
+    kind: Service
+    name: {{ include "demo-java-helm.fullname" . }}
+    weight: 100
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+  wildcardPolicy: None
+
 {{- end }}
