@@ -1,12 +1,7 @@
 image:
-  repository: registry.integ.dso.minint.fr/testbaremetal/java-demo
+  repository: registry.dso.interieur.rie.gouv.fr/alertesms/java-demo
 
 ingress:
   enabled: true
-  ingressClassName: openshift-ingress-rie
-  host: testbaremetal.apps.ocpbm01s1.cores.r1.pi2.minint.fr
-  tlsSecretName: secret-minint
-  tls:
-    enabled: true
-  annotations:
-    route.openshift.io/termination: edge
+  ingressClassName: openshift-default
+  host: socleprojecttest.d641.dev.forge.minint.fr
