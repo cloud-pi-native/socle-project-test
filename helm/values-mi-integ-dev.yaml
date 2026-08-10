@@ -1,5 +1,5 @@
 image:
-  repository: registry.integ.dso.minint.fr/integdev/java-demo
+  repository: registry.integ.dso.minint.fr/test9182/java-demo
 
 ingress:
   enabled: true
