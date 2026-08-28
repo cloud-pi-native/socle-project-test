@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: harbor.sdid-hp.cpin.numerique-interieur.com/socleprojecttest/java-demo
+  repository: harbor.dso.cpin-hp.numerique-interieur.fr/socleprojecttest/java-demo
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: "main"
@@ -22,7 +22,7 @@ service:
 ingress:
   enabled: true
   ingressClassName: nginx
-  host: socle-project-test.sdid-hp.cpin.numerique-interieur.com
+  host: socle-project-test.app.cpin-hp.numerique-interieur.fr
   tls:
     enabled: false
 
