@@ -1,0 +1,5 @@
+image:
+  repository: harbor.dso.formation.numerique-interieur.fr/testima/java-demo
+
+ingress:
+  host: socle-project-test-testima.app.formation.numerique-interieur.fr
