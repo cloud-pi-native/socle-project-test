@@ -2,6 +2,18 @@
   image: alpine/helm:latest
   variables:
     CHART_PATH: ./chart
+  before_script:
+    # Trust the internal CA (air-gapped env) so helm can reach the OCI registry
+    - |
+        if [ ! -z "$CA_BUNDLE" ] && [ -f "$CA_BUNDLE" ]; then
+          mkdir -p /usr/local/share/ca-certificates
+          cp "$CA_BUNDLE" /usr/local/share/ca-certificates/internal-ca.crt
+          if command -v update-ca-certificates >/dev/null 2>&1; then
+            update-ca-certificates
+          else
+            cat "$CA_BUNDLE" >> /etc/ssl/certs/ca-certificates.crt
+          fi
+        fi
   script:
     # Setup Docker auth for Helm (same credentials as kaniko)
     - mkdir -p /root/.docker
