@@ -26,6 +26,9 @@ ingress:
   tls:
     enabled: false
 
+nginx:
+  enabled: false
+
 resources:
   limits:
     memory: "512Mi"
